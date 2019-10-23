@@ -31,3 +31,5 @@ config.ini
 *.ini
 CoordiatesA.ahk
 Win.ahk
+*.bak
+*.bak

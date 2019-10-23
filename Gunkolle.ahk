@@ -279,7 +279,7 @@ Transition(ClickThis,WaitForThis)
 			FoundHome = 0
 			While (FoundHome != true) 
 			{
-				ClickS(Expeditionx,Expeditiony)
+				RFindClick := ("\pics\MissionAccompished", "rNoxPlayer mc o40 Count1 n0")
 				FoundHome := FindClick(A_ScriptDir "\pics\WaitForHome", "rNoxPlayer mc o30 w1000,50 Count1 n0 a1200,,,-600")
 			}
 			
@@ -305,200 +305,202 @@ UpdateEnergy()
 }
 
 
-TimeCheck()
-{
-	global
-	; global FriendCollector
-	; global FriendChecker
-	; global BatteryCollector
-	; global BatteryChecker
-	FormatTime, TimeString, %A_NowUTC%, HHmm
-	FormatTime, someday, %A_NowUTC%, ddd
-	GuiControl,, NB, %TimeString%
-	if (FriendCollector == 1) && (FriendChecker == 1)
-	{
-		if TimeString between 1100 and 1415
-		{ 
-			FriendChecker--
-			Random, FriendTime, 3000000, 3600000
-			SetTimer, FriendFlag, %Friendtime%
-			RFindClick("Dorm\Dorm", "rNoxPlayer mc o30 w30000,50")
-			RFindClick("Dorm\Visit", "rNoxPlayer mc o30 w30000,50")
-			sleep 100
-			RFindClick("Dorm\MyFriends", "rNoxPlayer mc o30 w30000,50")
-			sleep 250
-			RFindClick("Dorm\VisitDorm", "rNoxPlayer mc o30 w30000,50")
-			RFindClick("Dorm\WaitForFriends", "rNoxPlayer mc o30 w30000,50 n0")
-			FoundMessage := 0
-			FoundMessage := FindClick(A_ScriptDir "\pics\Dorm\Message", "rNoxPlayer mc o30 count1 n0")
-			while (FoundMessage == 0)
-			{
-				RFindClick("Dorm\Like", "rNoxPlayer mc o30 w30000,50")
-				sleep 500
-				Found := FindClick(A_ScriptDir "\pics\Dorm\Battery", "rNoxPlayer mc o30 count1 n0")
-				if (Found == 1)
-				{
-					RFindClick("Dorm\Battery", "rNoxPlayer mc o30 w30000,50")
-					RFindClick("Dorm\BatteryClose", "rNoxPlayer mc o30 w30000,50")
-				}
-				RFindClick("Dorm\Next", "rNoxPlayer mc o30 w30000,50")
-				sleep 1000
-				RFindClick("Dorm\WaitForFriends", "rNoxPlayer mc o30 w30000,50 n0")
-				sleep 200
-				FoundMessage := FindClick(A_ScriptDir "\pics\Dorm\Message", "rNoxPlayer mc o30 count1 n0 ")
-			}
-			RFindClick("Dorm\Return", "rNoxPlayer mc o30 w30000,50")
-			RFindClick("Dorm\Exit", "rNoxPlayer mc o30 w30000,50")
-			;ExpeditionCheck()
-		}
-	}
-	if ((BatteryCollector == 1) && (BatteryChecker == 1))
-	{
-		if TimeString between 1900 and 2200
-		{
-			BatteryChecker--
-			Random, BatteryTime, 3000000, 3600000
-			SetTimer, BatteryFlag, %BatteryTime%
-			Clicks(Dormx,Dormy)
-			pc := [DormVisitButton]
-			WaitForPixelColor(DormVisitButtonx,DormVisitButtony,pc,,,30)
-			sleep 5000
-			Clicks(Batteryx,Batteryy)
-			pc := [HPC]
-			WaitForPixelColor(Homex,Homey,pc,AndroidpopupExitx,AndroidpopupExity,30)
-		}
-	}
-	if (((CombatSimsData >= 1) && (CombatSimsDataChecker == 1)))
-	{
-		if (((RegExMatch(someday, "Sun|Tue|Fri") && (TimeString >= 0800 && TimeString <= 2400)) || (RegExMatch(someday, "Mon|Wed|Sat") && (TimeString >= 0000 && TimeString <= 0800))))
-		{
-			CombatSimsDataChecker--
-			Random, CombatSimsDataTime, 3600000,  3650000
-			SetTimer, CombatSimsDataFlag, %CombatSimsDataTime%
-			Transition("Combat","CombatPage")
-			NoStopFindClick("CombatSims\Data\CombatSims", "rNoxPlayer mc o30 w1000,50")
-			NoStopFindClick("CombatSims\Data\Training1", "rNoxPlayer mc o30 Count1 w30000,50 n0")
-			Found := FindClick(A_ScriptDir "\pics\CombatSims\Data\DataModeClicked", "rNoxPlayer mc o30 Count1 n0 w2000")
-			if (Found != True){
-				RFindClick("CombatSims\Data\DataMode", "rNoxPlayer mc o30 w2000,50")
-				}
-			EnergyCount := UpdateEnergy()
-			While (EnergyCount >= CombatSimsData) {
-				EnergyCount := UpdateEnergy()
-				loop,3 {
-					if ((EnergyCount >= CombatSimsData) && (CombatSimsData == A_Index)) {
-						RFindClick("CombatSims\Data\Training" A_Index, "rNoxPlayer mc o30 Count1 w5000,50")
-						RFindClick("CombatSims\Data\EnterCombat", "rNoxPlayer mc o30 w5000,50")
-						RFindClick("CombatSims\Data\Confirm", "rNoxPlayer mc o30 w5000,50")
-						;needs a better wait here; perhaps the yellow combat loading screen
-						sleep 5000 
-						Found := 0
-						While (Found != true) {
-							ClickS(Homex,Homey)
-							Found := FindClick(A_ScriptDir "\pics\CombatSims\Data\DataModeClicked", "rNoxPlayer mc o30 Count1 w2000,50 n0")
-						}
-						EnergyCount := UpdateEnergy()
-						sleep 2000
-					}
-				}
-			}
-			GoHome()
-		}
-	}
-}
+;TimeCheck()
+;{
+;	global
+;	; global FriendCollector
+;	; global FriendChecker
+;	; global BatteryCollector
+;	; global BatteryChecker
+;	FormatTime, TimeString, %A_NowUTC%, HHmm
+;	FormatTime, someday, %A_NowUTC%, ddd
+;	GuiControl,, NB, %TimeString%
+;	if (FriendCollector == 1) && (FriendChecker == 1)
+;	{
+;		if TimeString between 1100 and 1415
+;		{ 
+;			FriendChecker--
+;			Random, FriendTime, 3000000, 3600000
+;			SetTimer, FriendFlag, %Friendtime%
+;			RFindClick("Dorm\Dorm", "rNoxPlayer mc o30 w30000,50")
+;			RFindClick("Dorm\Visit", "rNoxPlayer mc o30 w30000,50")
+;			sleep 100
+;			RFindClick("Dorm\MyFriends", "rNoxPlayer mc o30 w30000,50")
+;			sleep 250
+;			RFindClick("Dorm\VisitDorm", "rNoxPlayer mc o30 w30000,50")
+;			RFindClick("Dorm\WaitForFriends", "rNoxPlayer mc o30 w30000,50 n0")
+;			FoundMessage := 0
+;			FoundMessage := FindClick(A_ScriptDir "\pics\Dorm\Message", "rNoxPlayer mc o30 count1 n0")
+;			while (FoundMessage == 0)
+;			{
+;				RFindClick("Dorm\Like", "rNoxPlayer mc o30 w30000,50")
+;				sleep 500
+;				Found := FindClick(A_ScriptDir "\pics\Dorm\Battery", "rNoxPlayer mc o30 count1 n0")
+;				if (Found == 1)
+;				{
+;					RFindClick("Dorm\Battery", "rNoxPlayer mc o30 w30000,50")
+;					RFindClick("Dorm\BatteryClose", "rNoxPlayer mc o30 w30000,50")
+;				}
+;				RFindClick("Dorm\Next", "rNoxPlayer mc o30 w30000,50")
+;				sleep 1000
+;				RFindClick("Dorm\WaitForFriends", "rNoxPlayer mc o30 w30000,50 n0")
+;				sleep 200
+;				FoundMessage := FindClick(A_ScriptDir "\pics\Dorm\Message", "rNoxPlayer mc o30 count1 n0 ")
+;			}
+;			RFindClick("Dorm\Return", "rNoxPlayer mc o30 w30000,50")
+;			RFindClick("Dorm\Exit", "rNoxPlayer mc o30 w30000,50")
+;			;ExpeditionCheck()
+;		}
+;	}
+;	if ((BatteryCollector == 1) && (BatteryChecker == 1))
+;	{
+;		if TimeString between 1900 and 2200
+;		{
+;			BatteryChecker--
+;			Random, BatteryTime, 3000000, 3600000
+;			SetTimer, BatteryFlag, %BatteryTime%
+;			Clicks(Dormx,Dormy)
+;			pc := [DormVisitButton]
+;			WaitForPixelColor(DormVisitButtonx,DormVisitButtony,pc,,,30)
+;			sleep 5000
+;			Clicks(Batteryx,Batteryy)
+;			pc := [HPC]
+;			WaitForPixelColor(Homex,Homey,pc,AndroidpopupExitx,AndroidpopupExity,30)
+;		}
+;	}
+;	if (((CombatSimsData >= 1) && (CombatSimsDataChecker == 1)))
+;	{
+;		if (((RegExMatch(someday, "Sun|Tue|Fri") && (TimeString >= 0800 && TimeString <= 2400)) || (RegExMatch(someday, "Mon|Wed|Sat") && (TimeString >= 0000 && TimeString <= 0800))))
+;		{
+;			CombatSimsDataChecker--
+;			Random, CombatSimsDataTime, 3600000,  3650000
+;			SetTimer, CombatSimsDataFlag, %CombatSimsDataTime%
+;			Transition("Combat","CombatPage")
+;			NoStopFindClick("CombatSims\Data\CombatSims", "rNoxPlayer mc o30 w1000,50")
+;			NoStopFindClick("CombatSims\Data\Training1", "rNoxPlayer mc o30 Count1 w30000,50 n0")
+;			Found := FindClick(A_ScriptDir "\pics\CombatSims\Data\DataModeClicked", "rNoxPlayer mc o30 Count1 n0 w2000")
+;			if (Found != True){
+;				RFindClick("CombatSims\Data\DataMode", "rNoxPlayer mc o30 w2000,50")
+;				}
+;			EnergyCount := UpdateEnergy()
+;			While (EnergyCount >= CombatSimsData) {
+;				EnergyCount := UpdateEnergy()
+;				loop,3 {
+;					if ((EnergyCount >= CombatSimsData) && (CombatSimsData == A_Index)) {
+;						RFindClick("CombatSims\Data\Training" A_Index, "rNoxPlayer mc o30 Count1 w5000,50")
+;						RFindClick("CombatSims\Data\EnterCombat", "rNoxPlayer mc o30 w5000,50")
+;						RFindClick("CombatSims\Data\Confirm", "rNoxPlayer mc o30 w5000,50")
+;						;needs a better wait here; perhaps the yellow combat loading screen
+;						sleep 5000 
+;						Found := 0
+;						While (Found != true) {
+;							ClickS(Homex,Homey)
+;							Found := FindClick(A_ScriptDir "\pics\CombatSims\Data\DataModeClicked", "rNoxPlayer mc o30 Count1 w2000,50 n0")
+;						}
+;						EnergyCount := UpdateEnergy()
+;						sleep 2000
+;					}
+;				}
+;			}
+;			GoHome()
+;		}
+;	}
+;}
 
-Production()
-{
-	Global
-	while (FindClick(A_ScriptDir "\pics\WaitForHome", "rNoxPlayer mc o30 Count1 n0 a1200,,,-600") != 1)
-	{
-		sleep 1000
-		ClickS(Expeditionx,Expeditiony)
-	}
-	Found := FindClick(A_ScriptDir "\pics\Production\FactoryReady", "rNoxPlayer mc o30 n0 count1 a1000,300,,-300")
-	GuiControl,, NB, Found something at production.
-	if ((ProductionTdoll == 1 || ProductionEquipment == 1) && Found == 1) 
-	{
-		Transition("Production\FactoryReady","Production\WaitForTdollProduction")
-		if (ProductionTdoll == 1)
-		{
-			FoundSlot1 := FindClick(A_ScriptDir "\pics\Production\TdollProductionComplete1", "rNoxPlayer mc o30 n0 count1 w2000,50")
-			FoundSlot2 := FindClick(A_ScriptDir "\pics\Production\TdollProductionComplete2", "rNoxPlayer mc o30 n0 count1")
-			FoundSlot3 := FindClick(A_ScriptDir "\pics\Production\TdollProductionComplete3", "rNoxPlayer mc o30 n0 count1")
-			loop,3
-			{
-				ProductionCounter := A_Index
-				if (FoundSlot%A_Index% == 1)
-				{
-					RFindClick("Production\TdollProductionComplete"A_Index, "rNoxPlayer mc o30 w30000,50")
-					Loop
-					{
-						if ( FindClick(A_ScriptDir "\pics\Production\TdollProductionStart"ProductionCounter, "rNoxPlayer mc o50 n0 count1") == 1 )
-						{
-							break
-						}
-						Else
-						{
-							ClickS(Safex,Safey)
-							sleep 500
-						}
-					}
-					RFindClick("Production\TdollProductionStart"A_Index, "rNoxPlayer mc o50 w30000,50")
-					RFindClick("Production\StartProduction", "rNoxPlayer mc o50 w30000,50")
-					sleep 1000
-				}
-			}
-		}
-		RFindClick("Production\WaitForTdollProduction", "rNoxPlayer mc o50 w30000,50 n0")
-		Found := FindClick(A_ScriptDir "\pics\Production\EquipmentReady", "rNoxPlayer mc o50 count1 n0 w2000,50")
-		if ( Found == 1)
-		{
-			RFindClick("Production\EquipmentReady", "rNoxPlayer mc o50 w30000,50")
-			RFindClick("Production\WaitForTdollProduction", "rNoxPlayer mc o50 w30000,50 n0")
-			FoundSlot1 := FindClick(A_ScriptDir "\pics\Production\EquipmentSlotComplete1", "rNoxPlayer mc o50 n0 count1 w2000,50")
-			FoundSlot2 := FindClick(A_ScriptDir "\pics\Production\EquipmentSlotComplete2", "rNoxPlayer mc o50 n0 count1")
-			FoundSlot3 := FindClick(A_ScriptDir "\pics\Production\EquipmentSlotComplete3", "rNoxPlayer mc o50 n0 count1")
-			loop,3
-			{
-				ProductionCounter := A_Index
-				if (FoundSlot%A_Index% == 1)
-				{
-					RFindClick("Production\EquipmentSlotComplete"A_Index, "rNoxPlayer mc o50 w30000,50")
-					Loop
-					{
-						if ( FindClick(A_ScriptDir "\pics\Production\EquipmentSlotStart"ProductionCounter, "rNoxPlayer mc o50 n0 count1") == 1 )
-						{
-							break
-						}
-						Else
-						{
-							ClickS(Safex,Safey)
-							sleep 500
-						}
-					}
-					if ( ProductionEquipment == 1)
-					{
-						RFindClick("Production\EquipmentSlotStart"A_Index, "rNoxPlayer mc o50 w30000,50")
-						RFindClick("Production\StartProduction", "rNoxPlayer mc o50 w30000,50")
-						sleep 1000
-					}
-				}
-			}
-		}
-		sleep 1000
-		RFindClick("FactoryReturn", "rNoxPlayer mc o50 w30000,50")
-	}
-}
+;Production()
+;{
+;	Global
+;	while (FindClick(A_ScriptDir "\pics\WaitForHome", "rNoxPlayer mc o30 Count1 n0 a1200,,,-600") != 1)
+;	{
+;		sleep 1000
+;		ClickS(Expeditionx,Expeditiony)
+;	}
+;	Found := FindClick(A_ScriptDir "\pics\Production\FactoryReady", "rNoxPlayer mc o30 n0 count1 a1000,300,,-300")
+;	GuiControl,, NB, Found something at production.
+;	if ((ProductionTdoll == 1 || ProductionEquipment == 1) && Found == 1) 
+;	{
+;		Transition("Production\FactoryReady","Production\WaitForTdollProduction")
+;		if (ProductionTdoll == 1)
+;		{
+;			FoundSlot1 := FindClick(A_ScriptDir "\pics\Production\TdollProductionComplete1", "rNoxPlayer mc o30 n0 count1 w2000,50")
+;			FoundSlot2 := FindClick(A_ScriptDir "\pics\Production\TdollProductionComplete2", "rNoxPlayer mc o30 n0 count1")
+;			FoundSlot3 := FindClick(A_ScriptDir "\pics\Production\TdollProductionComplete3", "rNoxPlayer mc o30 n0 count1")
+;			loop,3
+;			{
+;				ProductionCounter := A_Index
+;				if (FoundSlot%A_Index% == 1)
+;				{
+;					RFindClick("Production\TdollProductionComplete"A_Index, "rNoxPlayer mc o30 w30000,50")
+;					Loop
+;					{
+;						if ( FindClick(A_ScriptDir "\pics\Production\TdollProductionStart"ProductionCounter, "rNoxPlayer mc o50 n0 count1") == 1 )
+;						{
+;							break
+;						}
+;						Else
+;						{
+;							ClickS(Safex,Safey)
+;							sleep 500
+;						}
+;					}
+;					RFindClick("Production\TdollProductionStart"A_Index, "rNoxPlayer mc o50 w30000,50")
+;					RFindClick("Production\StartProduction", "rNoxPlayer mc o50 w30000,50")
+;					sleep 1000
+;				}
+;			}
+;		}
+;		RFindClick("Production\WaitForTdollProduction", "rNoxPlayer mc o50 w30000,50 n0")
+;		Found := FindClick(A_ScriptDir "\pics\Production\EquipmentReady", "rNoxPlayer mc o50 count1 n0 w2000,50")
+;		if ( Found == 1)
+;		{
+;			RFindClick("Production\EquipmentReady", "rNoxPlayer mc o50 w30000,50")
+;			RFindClick("Production\WaitForTdollProduction", "rNoxPlayer mc o50 w30000,50 n0")
+;			FoundSlot1 := FindClick(A_ScriptDir "\pics\Production\EquipmentSlotComplete1", "rNoxPlayer mc o50 n0 count1 w2000,50")
+;			FoundSlot2 := FindClick(A_ScriptDir "\pics\Production\EquipmentSlotComplete2", "rNoxPlayer mc o50 n0 count1")
+;			FoundSlot3 := FindClick(A_ScriptDir "\pics\Production\EquipmentSlotComplete3", "rNoxPlayer mc o50 n0 count1")
+;			loop,3
+;			{
+;				ProductionCounter := A_Index
+;				if (FoundSlot%A_Index% == 1)
+;				{
+;					RFindClick("Production\EquipmentSlotComplete"A_Index, "rNoxPlayer mc o50 w30000,50")
+;					Loop
+;					{
+;						if ( FindClick(A_ScriptDir "\pics\Production\EquipmentSlotStart"ProductionCounter, "rNoxPlayer mc o50 n0 count1") == 1 )
+;						{
+;							break
+;						}
+;						Else
+;						{
+;							Random SafeX, 5, 130
+;							Random SafeY, 70, 110
+;							ClickS(Safex,Safey)
+;							sleep 500
+;						}
+;					}
+;					if ( ProductionEquipment == 1)
+;					{
+;						RFindClick("Production\EquipmentSlotStart"A_Index, "rNoxPlayer mc o50 w30000,50")
+;						RFindClick("Production\StartProduction", "rNoxPlayer mc o50 w30000,50")
+;						sleep 1000
+;					}
+;				}
+;			}
+;		}
+;		sleep 1000
+;		RFindClick("FactoryReturn", "rNoxPlayer mc o50 w30000,50")
+;	}
+;}
 
 Repair()
 {
 	Global
 	while (FindClick(A_ScriptDir "\pics\WaitForHome", "rNoxPlayer mc o30 Count1 n0 a1200,,,-600") != 1)
-	{
-		GuiControl,, NB, An expedition is returning, retrying every 1
-		sleep 1000
-		ClickS(Expeditionx,Expeditiony)
-	}
+;	{
+;		GuiControl,, NB, An expedition is returning, retrying every 1
+;		sleep 1000
+;		ClickS(Expeditionx,Expeditiony)
+;	}
 	Found := 0
 	Found := FindClick(A_ScriptDir "\pics\Repair", "rNoxPlayer mc o50 w500,50 Count1 n0 a800,200,-200,-400")
 	if ( Found >= 1)
@@ -528,9 +530,11 @@ RSleep(min,max)
 ReplaceDPS(exhaustedDoll, loadedDoll, resetFilter:=False)
 {
 	Global
+	sleep 7000
 	WFindClick("DollList\"%exhaustedDoll% , "rNoxPlayer mc a125,125,-590,-220", 120) ;select Doll1
 	if resetFilter
 	{
+		
 		RFindClick("FilterYellow", "rNoxPlayer mc o20 w30000,50")
 		RFindClick("FilterReset", "rNoxPlayer mc o20 w30000,50")
 	}
@@ -559,17 +563,14 @@ AddToSecondEchelon(doll, slot)
 	{
 		if (slot == 1)
 		{
-			if (AMDV == 1) {
-			random xee, 170, 250
-			random yee, 280, 630
-			ClickS(xee, yee)
-			}
-			ClickS(Role1x,Role1y)
+		random xEcheSwap , 150, 300
+		random yEcheSwap , 140, 520
+		ClickS(xEcheSwap, yEcheSwap)
 		}
-		else if (slot == 2)
-		{
-			ClickS(Role2x,Role1y)
-		}	
+;		else if (slot == 2)
+;		{
+;			ClickS(Role2x,Role1y)
+;		}	
 		Found = FindClick(A_ScriptDir "\pics\FilterYellow", "rNoxPlayer mc o20 w30000,50 n0 count1")
 	}	
 	RFindClick("FilterYellow", "rNoxPlayer mc o20 w30000,50")
@@ -735,7 +736,7 @@ Sortie2:
 
 	Repair()
 
-	TimeCheck()
+;	TimeCheck()
 
 	; if A_Hour between 9 and 11 ; if between 9am and 12pm 
 	; { 
@@ -795,7 +796,8 @@ Sortie2:
 	; ExpeditionCheck("Daily")
 
 	Transition("Combat","CombatPage")
-
+	Transition("CombatMissionNotActive","CombatMissionActive")
+	
 	GuiControlGet, WorldV
 	RunMap(WorldV) 
 
@@ -824,7 +826,7 @@ Sortie2:
 	BC += 1
 
 	; check productions
-	Production()
+;	Production()
 
 	GuiControl,, NB, Idle
 	BusyS := 0
@@ -1048,7 +1050,7 @@ CombatSimsDataFlag:
 #Include %A_ScriptDir%/Functions/PixelCheck.ahk
 #Include %A_ScriptDir%/Functions/Pause.ahk
 #Include %A_ScriptDir%/Functions/Window.ahk
-#Include %A_ScriptDir%/Functions/PixelSearch.ahk
+;#Include %A_ScriptDir%/Functions/PixelSearch.ahk
 #Include %A_ScriptDir%/Functions/PixelMap.ahk
 #Include %A_ScriptDir%/Functions/Notify.ahk
 #Include %A_ScriptDir%/Functions/FindClick.ahk
